@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { JournalEntries } from './JournalEntries'
@@ -9,6 +9,12 @@ import { addNewNote } from '../../actions/notes';
 export const Sidebar = () => {
 
     const {name} = useSelector(state => state.auth)
+    const {notes} = useSelector(state => state.notes)
+
+    // useEffect(() => {
+        
+        
+    // }, [notes])
 
     const dispatch = useDispatch();
 
