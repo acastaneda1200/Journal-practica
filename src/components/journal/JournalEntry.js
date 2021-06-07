@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { noteSelected } from '../../actions/notes';
 
 
-export const JournalEntry = ({ id, date, title, body }) => {
+export const JournalEntry = ({ id, date, title, body, url }) => {
 
     const diaSemana = moment(date).format("dddd");
     const diaMes = moment(date).format("Do");
@@ -14,20 +14,24 @@ export const JournalEntry = ({ id, date, title, body }) => {
         dispatch(noteSelected(id, {
             date,
             title,
-            body
+            body,
+            url
         }))
     }
 
     return (
         <div className="journal__entry pointer" onClick={handleEntryClick}>
 
-            <div
-                className="journal__entry-picture"
-                style={{
-                    backgroundSize: 'cover',
-                    backgroundImage: 'url(https://earthsky.org/upl/2018/12/comet-wirtanen-Jack-Fusco-dec-2018-Anza-Borrego-desert-CA-e1544613895713.jpg)'
-                }}
-            ></div>
+            {
+                url &&
+                <div
+                    className="journal__entry-picture"
+                    style={{
+                        backgroundSize: 'cover',
+                        backgroundImage:
+                            `url(${url})`
+                    }}
+                ></div>}
 
             <div className="journal__entry-body">
                 <p className="journal__entry-title">
