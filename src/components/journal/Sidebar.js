@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { JournalEntries } from './JournalEntries'
 import { startLogout } from '../../actions/auth';
-import { addNewNote } from '../../actions/notes';
+import {  startNewNote } from '../../actions/notes';
 
 
 export const Sidebar = () => {
@@ -18,7 +18,7 @@ export const Sidebar = () => {
 
     const handleAddNewNote = () => {
        
-       dispatch(addNewNote())
+       dispatch(startNewNote())
     }
 
     return (

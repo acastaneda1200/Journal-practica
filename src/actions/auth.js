@@ -76,7 +76,7 @@ export const login = (uid, displayName) => ({
 export const startLogout = () => {
     return async( dispatch ) => {
         await firebase.auth().signOut();
-
+        dispatch(logOutNotes())
         dispatch( logout() );
     }
 }
@@ -86,4 +86,7 @@ export const logout = () => ({
     type: types.logout
 })
 
-
+export const logOutNotes = () => ({
+    type: types.notesLogout
+    
+})

@@ -10,6 +10,14 @@ const initialState = {
 export const notesReducer = (state = initialState, action) => {
 
     switch (action.type) {
+
+
+        case types.noteAdd:
+            
+            return {
+                 ...state,
+                 notes: [ action.payload, ...state.notes  ]
+            }
         case types.noteSelected:
             return {
                 ...state,
@@ -19,9 +27,9 @@ export const notesReducer = (state = initialState, action) => {
             }
         case types.notesLoad:
             return {
-               ...state,
-               notes:  action.payload
-               
+                ...state,
+                notes: action.payload
+
             }
 
         case types.notesUpdate:
@@ -32,11 +40,26 @@ export const notesReducer = (state = initialState, action) => {
             //traemos el nuevo payload osea la nueva nota
             return {
                 ...state,
-               notes: state.notes.map(
-                     note => note.id === action.payload.id ?
-                     {  ...action.payload} :
-                    note,
-               )
+                notes: state.notes.map(
+                    note => note.id === action.payload.id ?
+                        { ...action.payload } :
+                        note,
+                )
+            }
+
+        case types.notesDelete:
+
+            return {
+                ...state,
+                noteSelected: null,
+                notes: state.notes.filter(note => note.id !== action.payload)
+            }
+
+        case types.notesLogout:
+            return {
+
+                notes: [],
+                noteSelected: null
             }
 
         default:

@@ -1,23 +1,36 @@
 import { db } from "../firebase/firebase-config";
 import { types } from '../types/types';
 import Swal from 'sweetalert2'
+import { finishLoading, startLoading } from "./ui";
 
-export const addNewNote = () => {
+export const startNewNote = () => {
     return async (dispatch, getState) => {
 
         const { uid } = getState().auth;
 
+        dispatch(startLoading());
         const newNote = {
             title: '',
             body: '',
             date: new Date().getTime(),
         }
 
+
+
         const doc = await db.collection(`${uid}/journal/notes`).add(newNote)
+        dispatch(addNewNote(doc.id, newNote))
         dispatch(noteSelected(doc.id, newNote))
-        dispatch(startLoadNotes(uid))
+        dispatch(finishLoading());
     }
 }
+
+export const addNewNote = (id, note) => ({
+    type: types.noteAdd,
+    payload: {
+        id,
+        ...note
+    }
+})
 
 export const updateNote = (note) => {
     return async (dispatch, getState) => {
@@ -48,6 +61,16 @@ export const updateNote = (note) => {
     }
 }
 
+export const startDeleteNote = (id) => {
+    return async (dispatch, getState) => {
+        const { uid } = getState().auth;
+        dispatch(startLoading());
+        await db.doc(`${uid}/journal/notes/${id}`).delete()
+        dispatch(finishLoading());
+        dispatch(deleteNote(id))
+    }
+}
+
 export const noteSelected = (id, note) => ({
     type: types.noteSelected,
     payload: {
@@ -62,6 +85,11 @@ export const updateNotes = (id, note) => ({
         id,
         ...note
     }
+})
+
+export const deleteNote = (id) => ({
+    type: types.notesDelete,
+    payload: id
 })
 
 export const loadNotes = async (uid) => {
@@ -130,9 +158,10 @@ export const uploadFile = async (file) => {
             const cloudResp = await resp.json();
             return cloudResp.secure_url;
         } else {
-            throw await resp.json(); 
+            throw await resp.json();
         }
     } catch (error) {
         throw error
     }
 }
+
